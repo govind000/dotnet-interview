@@ -1,113 +1,48 @@
-# Solution Documentation
+Problems Identified
 
-**Candidate Name:** [Your Name]  
-**Completion Date:** [Date]
+--> Controllers were directly instantiating service implementations, leading to tight coupling and poor testability.
+--> Business logic and database access logic were mixed in the same classes, violating separation of concerns.
+--> SQLite connection strings were hard-coded and scattered across the codebase.
+--> SQL queries were constructed using string interpolation, introducing potential security vulnerabilities.
+--> API endpoints did not follow REST conventions or proper HTTP verb usage.
+--> Tests relied on a real database, making them unreliable, slow, and order-dependent.
 
----
+Architectural Decisions
 
-## Problems Identified
+--> Refactored the application to a layered architecture separating Controllers, Services, and Repositories.
+--> Introduced interfaces to decouple components and enable dependency injection.
+--> Moved all database access logic into a dedicated repository layer.
+--> Kept services focused purely on business logic.
+--> Refactored controllers to handle only HTTP request and response concerns.
+--> Centralized configuration using appsettings.json and applied dependency injection consistently.
 
-_Describe the issues you found in the original implementation. Consider aspects like:_
-- Architecture and design patterns
-- Code quality and maintainability
-- Security vulnerabilities
-- Performance concerns
-- Testing gaps
+Trade-Offs
 
-[Your analysis here]
+--> Chose raw SQLite with a repository pattern instead of using an ORM to keep data access explicit and easy to reason about.
+--> Prioritized clean architecture and testability over adding new features.
+--> Focused on unit tests instead of integration tests to ensure fast and deterministic feedback.
+--> Deferred concerns such as validation, logging, and authentication to keep the scope aligned with the assignment.
 
----
 
-## Architectural Decisions
 
-_Explain the architecture you chose and why. Consider:_
-- Design patterns applied
-- Project structure changes
-- Technology choices
-- Separation of concerns
+How to Run
+Prerequisites
 
-[Your decisions here]
+--> .NET SDK 8.0 or higher
 
----
+Build
+dotnet build
 
-## Trade-offs
+Run
+dotnet run --project TodoApi
 
-_Discuss compromises you made and the reasoning behind them. Consider:_
-- What did you prioritize?
-- What did you defer or simplify?
-- What alternatives did you consider?
+Test
+dotnet test
 
-[Your trade-offs here]
 
----
-
-## How to Run
-
-### Prerequisites
-[List required software, versions, etc.]
-
-### Build
-```bash
-# Add your build commands
-```
-
-### Run
-```bash
-# Add your run commands
-```
-
-### Test
-```bash
-# Add your test commands
-```
-
----
-
-## API Documentation
-
-### Endpoints
-
-#### Create TODO
-```
-Method: [HTTP method]
-URL: [endpoint]
-Request Body: [example]
-Response: [example]
-```
-
-#### Get TODO(s)
-```
-Method: [HTTP method]
-URL: [endpoint]
-Request: [example]
-Response: [example]
-```
-
-#### Update TODO
-```
-Method: [HTTP method]
-URL: [endpoint]
-Request Body: [example]
-Response: [example]
-```
-
-#### Delete TODO
-```
-Method: [HTTP method]
-URL: [endpoint]
-Request: [example]
-Response: [example]
-```
-
----
-
-## Future Improvements
-
-_What would you do if you had more time? Consider:_
-- Additional features
-- Performance optimizations
-- Enhanced testing
-- Better documentation
-- Deployment considerations
-
-[Your ideas here]
+Future Improvements
+--> Add request validation and centralized exception handling.
+--> Introduce pagination and filtering for large TODO lists.
+--> Add authentication and authorization.
+--> Implement integration tests using an in-memory database.
+--> Improve logging and observability.
